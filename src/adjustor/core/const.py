@@ -342,17 +342,17 @@ CLAW_DATA: DeviceTDPv2 = {
 }
 
 CLAW_AI_DATA: DeviceTDPv2 = {
-    "quiet": (8, 37, None),
+    "quiet": (8, 38, None),
     "balanced_min": 9,
-    "balanced": (12, 37, None),
+    "balanced": (12, 38, None),
     "performance_min": 16,
     "performance_dc": 30,
-    "performance": (30, 37, None),
+    "performance": (30, 38, None),
     "min_tdp": 8,
     "max_tdp_dc": 30,
     "max_tdp": 30,
     "max_tdp_oc": 30,
-    "max_tdp_sppt": 37,
+    "max_tdp_sppt": 38,
     "max_tdp_fppt": None,
     "supports_cycle": True,
 }

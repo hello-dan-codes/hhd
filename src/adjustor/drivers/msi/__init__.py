@@ -44,15 +44,15 @@ FAN_CURVE_NAME = "msi_wmi_platform"
 # Claw AI+
 # DC values
 #       PL1 PL2
-# perf   30  37
-# bal    12  37
-# power   8  37
+# perf   30  38
+# bal    12  38
+# power   8  38
 #
 # AC values
 #       PL1 PL2
-# perf   30  37
-# bal    12  37
-# power   8  37
+# perf   30  38
+# bal    12  38
+# power   8  38
 #
 # Claw 8A
 # Both AC/DC values
