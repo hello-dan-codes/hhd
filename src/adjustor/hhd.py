@@ -258,6 +258,12 @@ def autodetect(existing: Sequence[HHDPlugin]) -> Sequence[HHDPlugin]:
     with open("/proc/cpuinfo") as f:
         cpuinfo = f.read().strip()
 
+    logger.info(
+        "Auto-detecting device: product_name='%s', board_name='%s'",
+        prod,
+        board,
+    )
+
     use_acpi_call = False
     drivers_matched = False
 
@@ -290,6 +296,7 @@ def autodetect(existing: Sequence[HHDPlugin]) -> Sequence[HHDPlugin]:
             drivers_matched = True
             min_tdp = v["min_tdp"]
             max_tdp = v["max_tdp"]
+            logger.info("Matched ASUS device '%s' (min_tdp=%s, max_tdp=%s)", k, min_tdp, max_tdp)
             break
 
     for k, v in MSI_DATA.items():
@@ -298,6 +305,14 @@ def autodetect(existing: Sequence[HHDPlugin]) -> Sequence[HHDPlugin]:
             drivers_matched = True
             min_tdp = v["min_tdp"]
             max_tdp = v["max_tdp"]
+            logger.info(
+                "Matched MSI device '%s' (min_tdp=%s, max_tdp=%s, max_tdp_sppt=%s, max_tdp_fppt=%s)",
+                k,
+                min_tdp,
+                max_tdp,
+                v.get("max_tdp_sppt", None),
+                v.get("max_tdp_fppt", None),
+            )
             break
 
     if os.environ.get("HHD_ADJ_DEBUG") or os.environ.get("HHD_ENABLE_SMU"):
@@ -318,6 +333,13 @@ def autodetect(existing: Sequence[HHDPlugin]) -> Sequence[HHDPlugin]:
             logger.error(f"Failed to get TDP limits for {prod}:\n{e}")
 
         pp_enable |= bool(os.environ.get("HHD_ADJ_DEBUG"))
+        logger.info(
+            "Matched SMU device '%s' (min_tdp=%s, default_tdp=%s, max_tdp=%s)",
+            prod,
+            min_tdp,
+            default_tdp,
+            max_tdp,
+        )
         drivers.append(
             SmuDriverPlugin(
                 dev,
@@ -339,6 +361,7 @@ def autodetect(existing: Sequence[HHDPlugin]) -> Sequence[HHDPlugin]:
     if not drivers_matched:
         for name, (dev, cpu, energy_map) in CPU_DATA.items():
             if name in cpuinfo:
+                logger.info("Matched CPU fallback '%s' for SMU", name)
                 drivers.append(
                     SmuDriverPlugin(
                         dev,
